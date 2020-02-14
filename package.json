@@ -1,0 +1,43 @@
+{
+	"name": "iar",
+	"displayName": "IAR",
+	"description": "IAR ARM support for Visual Studio Code",
+	"version": "0.1.0",
+	"publisher": "paul-fox",
+	"author": {
+		"name": "Paul Fox"
+	},
+	"categories": [
+		"Programming Languages"
+	],
+	"engines": {
+		"vscode": "^0.10.1"
+	},
+	"galleryBanner": {
+		"color": "#0084A9",
+		"theme": "dark"
+	},
+	"contributes": {
+		"languages": [
+			{
+				"id": "iar",
+				"aliases": [
+					"IAR",
+					"iar"
+				],
+				"extensions": [
+					".s",
+					".S"
+				],
+				"configuration": "./language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "iar",
+				"scopeName": "source.iar",
+				"path": "./syntaxes/iar.tmlanguage.json"
+			}
+		]
+	}
+}
