@@ -12,12 +12,75 @@
       "name": "comment.iar"
     },
     {
-      "match": "^\\s*#(define|include|if|ifdef|else|elif|endif)(\\s(defined\\([a-zA-Z_]+\\)|[a-zA-Z_]+))?$",
-      "name": "meta.preprocessor"
+			"begin": "^\\s*((#)\\s*(include(?:_next)?|import))\\b\\s*",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.control.directive.$3.iar"
+				},
+				"2": {
+					"name": "punctuation.definition.directive.iar"
+				}
+			},
+			"end": "(?=(?://|/\\*))|(?<!\\\\)(?=\\n)",
+			"name": "meta.preprocessor.include.iar",
+			"patterns": [
+				{
+					"include": "#line_continuation_character"
+				},
+				{
+					"begin": "\"",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.begin.iar"
+						}
+					},
+					"end": "\"",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.end.iar"
+						}
+					},
+					"name": "string.quoted.double.include.iar"
+				},
+				{
+					"begin": "<",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.begin.iar"
+						}
+					},
+					"end": ">",
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.end.iar"
+						}
+					},
+					"name": "string.quoted.other.lt-gt.include.iar"
+				}
+			]
+		},
+    {
+      "begin": "^\\s*#(define|ifdef|ifndef|elif|if)",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.directive.conditional.iar"
+        }
+      },
+      "end": "(?=(?://|/\\*))|(?<!\\\\)(?=\\n)",
+      "patterns": [
+        {
+          "match": "defined",
+          "name": "keyword.control.directive.conditional.iar"
+        },
+        {
+          "match": "[^\n\\\\/\\*]+",
+          "name": "meta.preprocessor.iar"
+        }
+      ]
     },
     {
-      "match": "^\\s*#.*$",
-      "name": "comment.iar"
+      "match": "^\\s*#(else|endif)\\b",
+      "name": "keyword.control.directive.conditional.iar"
     },
     {
       "name": "comment.iar",
@@ -72,6 +135,10 @@
       "name": "storage.other.register.iar"
     },
     {
+      "match": "(?i)\\b(psp|msp|basepri|primask|faultmask|control)(?-i)",
+      "name": "storage.other.register.special.iar"
+    },
+    {
       "name": "storage.memaddress.iar",
       "begin": "\\[",
       "end": "\\]",
@@ -124,7 +191,19 @@
       "name": "support.function.mnemonic.arithmetic.iar"
     },
     {
+      "match": "\\b(?i)cps(ie|id)(.n|.w)?\\s+?(i|f)?(i|f)?",
+      "name": "support.function.mnemonic.system.iar"
+    },
+    {
+      "match": "\\b(?i)it(t|e)*\\s+(ne|eq|cs|hs|cc|lo|mi|pl|vs|vc|hi|ls|lt|le|gt|ge|al)",
+      "name": "support.function.nmemonic.conditional.iar"
+    },
+    {
       "match": "\\b(?i)(swi|svc|wfi|dmb|clrex|dsb|isb|v(ldr|str|push|pop)|push|pop|b(l|l?x|l?r)?|(i|e)?ret|(st|ld)(p|r(ex|s?(h|b)|d)?|m((f|e)(d|a)|(d|i)(b|a))?))(ne|eq|cs|hs|cc|lo|mi|pl|vs|vc|hi|ls|lt|le|gt|ge|al)?(?-i)\\b",
+      "name": "support.function.mnemonic.memory.iar"
+    },
+    {
+      "match": "\\b(?i)v?(ldm|stm)(ia|ib|da|db)?(ne|eq|cs|hs|cc|lo|mi|pl|vs|vc|hi|ls|lt|le|gt|ge|al)?(?-i)\\b",
       "name": "support.function.mnemonic.memory.iar"
     },
     {
@@ -133,21 +212,30 @@
     },
     {
       "name": "keyword.control.directive.iar",
-      "match": "\\.(?i)(globl|global|macro|endm|purgem|if|elseif|else|endif|SECTION|text|data|bss|arm|align|balign|irp|rept|endr|req|unreq|error|short|func|endfunc|hidden|type|fpu|arch|code|altmacro|object_arch|word|int|string)(?-i)\\b"
+      "match": "\\.(?i)(globl|global|macro|endm|purgem|if|elseif|else|endif|text|data|bss|arm|align|balign|irp|rept|endr|req|unreq|error|short|func|endfunc|hidden|type|fpu|arch|code|altmacro|object_arch|word|int|string)(?-i)\\b"
     },
     {
-      "match": "\\b(MODULE|END)",
+      "match": "\\b(?i)(MODULE|END)(?-i)",
       "name": "keyword.other.unit"
     },
     {
-      "match": "(SECTION)\\b ([\\w_\\.][\\w_\\.0-9]*)(:CODE|:CONST|:DATA)?(:REORDER|:NOREORDER)?(:ROOT|:NOROOT)?",
-      "captures": {
-        "1": { "name": "keyword.control.directive.iar" }, 
-        "2": {"name": "entity.name.class.iar"},
-        "3": {"name": "storage.type"},
-        "4": {"name": "storage.modifier"},
-        "5": {"name": "storage.modifier"}
-      }
+      "begin": "(?i)\\b(section|rseg)\\s+([a-zA-Z_][0-9a-zA-Z_]*)",
+      "end": "(?=(?://|/\\*))|(?<!\\\\)(?=\\n)(?-i)",
+      "beginCaptures": { 
+        "1": { "name": "keyword.control.directive.iar" },  
+        "2": { "name": "variable.name.iar" 
+        }
+      },
+      "name": "entity.name.section.iar",
+      "patterns": [
+        { "match": ":ROOT|:NOROOT|:REORDER|:NOREORDER", "name":"storage.modifier.iar"},
+        { "match": ":CODE|:CONST|:DATA", "name": "storage.type.iar"},
+        { "match": "\\(([0-9]+)\\)", "name":"storage.modifier.iar", "captures": { "1" : {"name": "constant.numeric.integer"}}}
+      ]
+    },
+    {
+      "match": "(?i)(align|alignram|alignrom|even|odd|section_type)(?-i)\\b",
+      "name": "keyword.control.directive.iar"
     },
     {
       "match": "(PUBLIC|PUBWEAK|EXTERN)\\s+(\\w[\\w0-9]*)",
@@ -157,12 +245,8 @@
       }
     },
     {
-      "match": "\\b(DATA|DC8|DC16|DC24|DC32|DCB|DCD|DCW|DEFINE|DS8|DS16|DS23|DS32|THUMB)\\b",
+      "match": "\\b(?i)(DATA|DC8|DC16|DC24|DC32|DCB|DCD|DCW|DEFINE|DS8|DS16|DS23|DS32|THUMB)(?-i)\\b",
       "name": "keyword.other"
-    },
-    {
-      "name": "keyword.other.preprocessor.iar",
-      "match": "^\\s*\\.?(define|defined|elif|else|if|ifdef|ifndef|line|include|get|pragma|undef|endif)\\b"
     },
     {
       "match": "\\b\\=",

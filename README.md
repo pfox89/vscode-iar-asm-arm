@@ -9,4 +9,4 @@ First install [Visual Studio Code](https://code.visualstudio.com). In the comman
 ## Screenshot
 
 ## License
-[MIT](LICENSE)
+[MIT](https://rdu01-git-prod.go.mts.com/bitbucket/scm/ut/vscode-iar-asm.git/LICENSE)

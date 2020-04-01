@@ -2,7 +2,7 @@
 	"name": "iar",
 	"displayName": "IAR",
 	"description": "IAR ARM support for Visual Studio Code",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"publisher": "paul-fox",
 	"author": {
 		"name": "Paul Fox"
@@ -12,6 +12,10 @@
 	],
 	"engines": {
 		"vscode": "^0.10.1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://rdu01-git-prod.go.mts.com/bitbucket/scm/ut/vscode-iar-asm.git"
 	},
 	"galleryBanner": {
 		"color": "#0084A9",
@@ -37,6 +41,11 @@
 				"language": "iar",
 				"scopeName": "source.iar",
 				"path": "./syntaxes/iar.tmlanguage.json"
+			}
+		],
+		"breakpoints": [
+			{
+				"language": "iar"
 			}
 		]
 	}
