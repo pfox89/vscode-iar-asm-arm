@@ -19,7 +19,7 @@
 		"url": "https://github.com/pfox89/vscode-iar-asm-arm.git"
 	},
 	"galleryBanner": {
-		"color": "#0084A9",
+		"color": "#2C2C32",
 		"theme": "dark"
 	},
 	"contributes": {
