@@ -2,7 +2,7 @@
 	"name": "iar-arm-asm",
 	"displayName": "IAR ARM Assembler",
 	"description": "IAR ARM assembly language support for Visual Studio Code",
-	"version": "0.2.1",
+	"version": "0.2.0",
 	"publisher": "paul-fox",
 	"author": {
 		"name": "Paul Fox"
@@ -15,6 +15,7 @@
 	},
 	"repository": {
 		"type": "git",
+		"url": "https://github.com/pfox89/vscode-iar-asm-arm.git"
 	},
 	"galleryBanner": {
 		"color": "#0084A9",
